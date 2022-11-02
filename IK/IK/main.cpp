@@ -31,7 +31,7 @@ vector<int> cstr;
 void init(){
     newBody.clear();
     oldBody.clear();
-    bvh->Load("/Users/choijongwon/Desktop/ContraintBasedMotionEdit/IK/BVH/WalkStartA.bvh");
+    bvh->Load("/Users/choijongwon/Desktop/ContraintBasedMotionEdit/BVH/WalkStartA.bvh");
     Body temp;
     totalFrame = bvh->num_frame;
     for(int i = 0; i < bvh->num_frame; i++){
