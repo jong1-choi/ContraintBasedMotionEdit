@@ -36,34 +36,21 @@ struct Link {
         drawCylinder( getPos(), parentGlobalP, 0.8 );
     }
     void shapeRender() const {
-        drawCylinder( getPos(), parentGlobalP, 0.1 );
-    }
-    void controlPRender() const {
-        drawSphere( getPos(), 1, vec4(0,1,0,1) );
+        drawCylinder( getPos(), parentGlobalP, 0.1);
     }
     
     glm::vec3 getPos() const {
         return parentGlobalQ * l + parentGlobalP;
-//        return position;
     }
     glm::quat getOri() const {
-//        return parentGlobalQ * l + parentGlobalP;
         return parentGlobalQ * q;
     }
-//    glm::quat getOrientation() const {
-////        return parentGlobalQ * q;
-//        return q;
-//    }
     void rotate( const glm::quat& rot ) {
         q = rot * q;
     }
     void updatePose( const glm::vec3& pos, const glm::quat& ori ) {
         parentGlobalP = pos;
         parentGlobalQ = ori;
-//        quat link = quat(0, l);
-//        quat p = ori * link * inverse(ori);
-//        position =  pos + vec3(p.x, p.y, p.z);
-//        orientation = ori * q;
     }
     Link( int parI, int chiN, const glm::vec3& ll, const glm::quat& qq, const glm::vec3& pl, const glm::quat& pq, bool end) : parentIndex(parI), childIndex(chiN), l(ll), q(qq) , parentGlobalP(pl), parentGlobalQ(pq), isEnd(end){}
 
@@ -73,7 +60,7 @@ struct Link {
 struct Body {
     std::vector<Link> links;
     glm::vec3 globalP = glm::vec3(0);
-    glm::quat globalQ = glm::quat(1, 0, 0, 0);//global orientation
+    glm::quat globalQ = glm::quat(1, 0, 0, 0);
     Eigen::MatrixXf displacement;
     bool constraint = false;
     void clear() {
@@ -97,24 +84,10 @@ struct Body {
                 l.shapeRender();
         }
     }
-    void controlPRender() const {
-        for (auto& l : links) {
-            if(l.parentIndex >= 0)
-                l.controlPRender();
-        }
-    }
     
     
     void updatePos(int condition) {
-//        for (int i = 0; i < links.size(); i++) {
-//            if (i == 0) {
-//                links[i].updatePose(vec3(0), quat(1, 0, 0, 0));
-//            }
-//            else {
-//                Link pLink = links[links[i].parentIndex];
-//                links[i].updatePose(pLink.getPos(), pLink.getOri());
-//            }
-//        }
+
         if(condition == 0){
             for (int i = 1; i < links.size(); i++) {
                 Link pLink = links[links[i].parentIndex];
@@ -177,7 +150,6 @@ struct Body {
             (log(inverse(origin.links[i-1].q) * edited.links[i-1].q)).z;
             
         }
-//        constraint = true;
         displacement = d;
     }
 };

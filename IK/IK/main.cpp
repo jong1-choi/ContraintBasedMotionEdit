@@ -67,14 +67,9 @@ void frame(float dt) {
 }
 
 void render() {
-
-    for(int i = 1; i < 5; i++){
-        newBody[(totalFrame/4) * i].controlPRender();
-    }
     
     if(bvh->joints.size() > 0){
-//        newBody[frameNum].render();
-        newBody[frameNum].shapeRender();
+        newBody[frameNum].render();
         for(int i = 0; i < bvh->num_frame; i++){
             newBody[i].shapeRender();
         }
@@ -116,18 +111,13 @@ bool press( const glm::vec2& pt2, const glm::vec3& pt3, float d ) {
     oldPt3 = pt3;
     oldPt2 = pt2;
     oldD = d;
-//    for( int i=0; i < 31 ; i++)
-//    if( length( pt3 - newBody[frameNum].links[i].getPos() ) < 1.5 ) {
-//        picked = i;
-//        targetPt = pickPt = newBody[frameNum].links[i].getPos();
-//        return true;
-//    }
-    for( int i=1; i < 5 ; i++)
-    if( length( pt3 - newBody[(totalFrame/4) * i].links[i].getPos() ) < 1.5 ) {
+    for( int i=0; i < 31 ; i++)
+    if( length( pt3 - newBody[frameNum].links[i].getPos() ) < 1.5 ) {
         picked = i;
-        targetPt = pickPt = newBody[(totalFrame/4) * i].links[i].getPos();
+        targetPt = pickPt = newBody[frameNum].links[i].getPos();
         return true;
     }
+
     return false;
 }
 
@@ -145,12 +135,7 @@ bool drag( const glm::vec2& pt2, const glm::vec3& pt3, float d ) {
         newBody[frameNum].getDisplacement(oldBody[frameNum], newBody[frameNum]);
 
         newBody[frameNum].constraint = true;
-//
-//        for(int i = 0; i < totalFrame; i++){
-//            cout << i << " frame " << endl;
-//            cout << body[i].displacement << endl;
-//        }
-//
+
         return true;
     }
     return false;
@@ -159,7 +144,7 @@ bool drag( const glm::vec2& pt2, const glm::vec3& pt3, float d ) {
 void motionEdit(){
     vector<int> cons;
     float t = 0;
-    int space = 2;
+    int space = 5;
     int controlN;
     controlN = totalFrame/space + 1;
     vector<vec3> controlP;
@@ -175,51 +160,59 @@ void motionEdit(){
         }
     }
 
-//    for(int i = 0; i < bvh->joints.size(); i++){
-//        cout << i << " " << bvh->joints[i]->name << endl;
-//    }
-    for(int i = 0; i < bvh->joints.size()+1; i++){
+    for(int i = 1; i < bvh->joints.size()+1; i++){
         
         if(cons.size() == 0) break;
         
-        Eigen::MatrixXf basis = Eigen::MatrixXf(cons.size(),4);
-        Eigen::MatrixXf p = Eigen::MatrixXf(cons.size(),3);
-        Eigen::MatrixXf b = Eigen::MatrixXf(4,3);
+        controlP.clear();
+        Eigen::MatrixXf basis = Eigen::MatrixXf::Zero(controlN,cons.size());
+        Eigen::MatrixXf p = Eigen::MatrixXf::Zero(3,cons.size());
+        Eigen::MatrixXf b = Eigen::MatrixXf::Zero(3,controlN);
         
         for(int j = 0; j < cons.size(); j++){
-            
-            if(cons[j]/space < 1 || cons[j]/space > controlN - 3){
+
+            if(cons[j]/space < 1 || cons[j]/space > controlN - 4){
                 cout << "예외" << endl;
             }
             else{
                 t = (cons[j]%space)/float(space);
-                basis(j,0) = (t*t*t)/6.f;
-                basis(j,1) = (-3*t*t*t + 3*t*t + 3*t + 1)/6.f;
-                basis(j,2) = (3*t*t*t - 6*t*t + 4)/6.f;
-                basis(j,3) = ((1-t)*(1-t)*(1-t))/6.f;
+
+                basis(cons[j]/space - 1, j) = 1.f / 6.f * (1 - t) * (1 - t) * (1 - t);
+                basis(cons[j]/space    , j) = 1.f / 6.f * (3 * t * t * t - 6 * t * t + 4);
+                basis(cons[j]/space + 1, j) = 1.f / 6.f * (-3 * t * t * t + 3 * t * t + 3 * t + 1);
+                basis(cons[j]/space + 2, j) = 1.f / 6.f * t * t * t;
+
+                p(0, j) = newBody[cons[j]].displacement(i,0);
+                p(1, j) = newBody[cons[j]].displacement(i,1);
+                p(2, j) = newBody[cons[j]].displacement(i,2);
                 
-                p(j,0) = newBody[cons[j]].displacement(i,0);
-                p(j,1) = newBody[cons[j]].displacement(i,1);
-                p(j,2) = newBody[cons[j]].displacement(i,2);
-                
-                auto solver = basis.bdcSvd(Eigen::ComputeThinU | Eigen::ComputeThinV);
-                b = solver.solve(p);
-                
-//                cout << "jointNum " << i-1 << endl;
-//                cout << b << endl;
-                
-                controlP[cons[j]/space - 1] = vec3(b(0,0), b(0,1), b(0,2));
-                controlP[cons[j]/space    ] = vec3(b(1,0), b(1,1), b(1,2));
-                controlP[cons[j]/space + 1] = vec3(b(2,0), b(2,1), b(2,2));
-                controlP[cons[j]/space + 2] = vec3(b(3,0), b(3,1), b(3,2));
             }
         }
         
         cout << "jointNum " << i-1 << endl;
+        cout << "basis" << endl;
+        cout << basis << endl;
+        
+        auto solver = basis.bdcSvd(Eigen::ComputeThinU | Eigen::ComputeThinV);
+        solver.setThreshold(0.01);
+        b = p * solver.solve(Eigen::MatrixXf::Identity(controlN,controlN));
+        
+        
+        for(int j = 0; j < controlN; j++){
+            controlP[j] = vec3(b(0,j), b(1,j), b(2,j));
+            
+        }
+        
+        
+        cout << "controlP" << endl;
         for(int j = 0; j < controlP.size(); j++){
 
             cout << controlP[j].x << " " << controlP[j].y << " " << controlP[j].z << endl;
         }
+        cout << b << endl;
+        
+        
+        
         
         for(int j = 0; j < totalFrame; j++){
 
@@ -234,17 +227,13 @@ void motionEdit(){
                 vec3 bspline;
                 
                 bspline =
-                controlP[j/space - 1] * (t*t*t)/6.f +
-                controlP[j/space    ] * (-3*t*t*t + 3*t*t + 3*t + 1)/6.f +
-                controlP[j/space + 1] * (3*t*t*t - 6*t*t + 4)/6.f +
-                controlP[j/space + 2] * ((1-t)*(1-t)*(1-t))/6.f;
-                
-                quat dq = quat(1,bspline.x,bspline.y,bspline.x);
-                
-//                cout << "frame " << j << endl;
-//                cout << dq.x << " " << dq.y << " " << dq.z << endl;
-//                cout << bspline.x << " " << bspline.x << " " << bspline.x << endl;
-                
+                controlP[j/space - 1] * 1.f / 6.f * (1 - t) * (1 - t) * (1 - t) +
+                controlP[j/space    ] * 1.f / 6.f * (3 * t * t * t - 6 * t * t + 4) +
+                controlP[j/space + 1] * 1.f / 6.f * (-3 * t * t * t + 3 * t * t + 3 * t + 1) +
+                controlP[j/space + 2] * 1.f / 6.f * t * t * t;
+  
+                quat dq = quat(1,bspline.x,bspline.y,bspline.z);
+                              
                 newBody[j].links[i-1].q = oldBody[j].links[i-1].q * dq;
             }
         }
