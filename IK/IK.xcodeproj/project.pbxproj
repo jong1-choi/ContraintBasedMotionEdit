@@ -8,10 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		C20BE6FA2910F65B00CA7E9C /* libglfw3_.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F7572A522670F4CF00E26A49 /* libglfw3_.a */; };
-		C2272BD62869878B006EFAF2 /* IK.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C2272BD42869878A006EFAF2 /* IK.cpp */; };
-		C22DA0B228338796002E6DB4 /* readBVH.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C22DA0B028338796002E6DB4 /* readBVH.cpp */; };
-		F7572A3E2670F42600E26A49 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7572A3D2670F42600E26A49 /* main.cpp */; };
-		F7572A482670F49A00E26A49 /* GLTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7572A472670F49A00E26A49 /* GLTools.cpp */; };
+		C2AC706E29BAEF3200D829BD /* GLTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7572A472670F49A00E26A49 /* GLTools.cpp */; };
+		C2AC706F29BAEF3600D829BD /* readBVH.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C22DA0B028338796002E6DB4 /* readBVH.cpp */; };
+		C2AC707029BAEF3A00D829BD /* IK.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C2272BD42869878A006EFAF2 /* IK.cpp */; };
+		C2AC707129BAEF3E00D829BD /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7572A3D2670F42600E26A49 /* main.cpp */; };
 		F7572A4C2670F4AE00E26A49 /* shader.frag in CopyFiles */ = {isa = PBXBuildFile; fileRef = F7572A4A2670F4A400E26A49 /* shader.frag */; };
 		F7572A4D2670F4AE00E26A49 /* shader.vert in CopyFiles */ = {isa = PBXBuildFile; fileRef = F7572A4B2670F4A400E26A49 /* shader.vert */; };
 		F7572A512670F4BF00E26A49 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7572A502670F4BF00E26A49 /* OpenGL.framework */; };
@@ -62,7 +62,6 @@
 		F7572A632670F5E200E26A49 /* AnimView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AnimView.hpp; sourceTree = "<group>"; };
 		F7572A682671DB4300E26A49 /* const.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = const.vert; path = Res/const.vert; sourceTree = SOURCE_ROOT; };
 		F7572A692671DB4300E26A49 /* const.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = const.frag; path = Res/const.frag; sourceTree = SOURCE_ROOT; };
-		F7572A6D2671DC2E00E26A49 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,7 +111,6 @@
 				F7572A452670F49A00E26A49 /* GLTools.hpp */,
 				F7572A462670F49A00E26A49 /* ModelView.hpp */,
 				F7572A632670F5E200E26A49 /* AnimView.hpp */,
-				F7572A6D2671DC2E00E26A49 /* PrefixHeader.pch */,
 				C22DA0B028338796002E6DB4 /* readBVH.cpp */,
 				C22DA0B128338796002E6DB4 /* readBVH.hpp */,
 				C2272BD42869878A006EFAF2 /* IK.cpp */,
@@ -191,10 +189,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F7572A482670F49A00E26A49 /* GLTools.cpp in Sources */,
-				F7572A3E2670F42600E26A49 /* main.cpp in Sources */,
-				C22DA0B228338796002E6DB4 /* readBVH.cpp in Sources */,
-				C2272BD62869878B006EFAF2 /* IK.cpp in Sources */,
+				C2AC707129BAEF3E00D829BD /* main.cpp in Sources */,
+				C2AC707029BAEF3A00D829BD /* IK.cpp in Sources */,
+				C2AC706F29BAEF3600D829BD /* readBVH.cpp in Sources */,
+				C2AC706E29BAEF3200D829BD /* GLTools.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -243,7 +241,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = IK/prefixHeader.pch;
+				GCC_PREFIX_HEADER = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -306,7 +304,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = IK/prefixHeader.pch;
+				GCC_PREFIX_HEADER = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -349,7 +347,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = LN9Y4KJ444;
 				ENABLE_HARDENED_RUNTIME = YES;
 				HEADER_SEARCH_PATHS = (
 					/usr/local/include/eigen3,
