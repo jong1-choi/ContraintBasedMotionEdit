@@ -1,41 +1,19 @@
-# Created by https://www.toptal.com/developers/gitignore/api/c++
-# Edit at https://www.toptal.com/developers/gitignore?templates=c++
+# Visual Studio build output
+bin/
+obj/
+.vs/
+*.user
+*.suo
+*.aps
+*.db
 
-### C++ ###
-# Prerequisites
-*.d
+# macOS
+.DS_Store
+__MACOSX/
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# Xcode (legacy)
+*.xcodeproj/
+*.xcworkspace/
 
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
-
-#etc
+# BVH motion data (user-supplied)
 *.bvh
-
-# End of https://www.toptal.com/developers/gitignore/api/c++

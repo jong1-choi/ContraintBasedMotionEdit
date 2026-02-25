@@ -1,0 +1,27 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/src",
+                "${workspaceFolder}/include",
+                "${workspaceFolder}/third_party/imgui",
+                "${workspaceFolder}/ContraintBasedMotionEdit-main/src",
+                "${workspaceFolder}/ContraintBasedMotionEdit-main/include",
+                "${workspaceFolder}/ContraintBasedMotionEdit-main/third_party/imgui",
+                "C:/Users/user/Downloads/ContraintBasedMotionEdit-main/ContraintBasedMotionEdit-main/src",
+                "C:/Users/user/Downloads/ContraintBasedMotionEdit-main/ContraintBasedMotionEdit-main/include",
+                "C:/Users/user/Downloads/ContraintBasedMotionEdit-main/ContraintBasedMotionEdit-main/third_party/imgui"
+            ],
+            "defines": [
+                "GLEW_STATIC",
+                "_DEBUG"
+            ],
+            "compilerPath": "cl.exe",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "windows-msvc-x64",
+            "windowsSdkVersion": "10.0"
+        }
+    ],
+    "version": 4
+}
